@@ -9,9 +9,10 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define play      4
 #define speaker   5
 
-// Metronome variables
+// Core variables
 uint8_t bpm = 120;
 bool enable = false;
+String visual = "";
 
 void setup() {
   // Init GPIO
@@ -33,6 +34,10 @@ void setup() {
 void loop() {
   // Metronome output on toggle
   if (enable) beep(60000/bpm);
+  else if (!visual.equals("")) {
+    visual = "";
+    lcd_clear_line(2);
+  }
   
   // Read pins
   read_input_write_display();
