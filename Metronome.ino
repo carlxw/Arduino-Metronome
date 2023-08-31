@@ -1,12 +1,12 @@
 // read_input_write_display()
 unsigned long current_debounce = 0;
-unsigned long delay_debounce = 125;
+unsigned long delay_debounce = BUTTON_DEBOUNCE_MS;
 unsigned long buttonHoldI = 0;
 unsigned long buttonHoldD = 0;
 
 // beep() 
 unsigned long current_beep = 0;
-String output_concat = "| ";
+String output_concat = String(PULSE_CHAR) + " ";
 
 // =================================================
 
@@ -21,17 +21,17 @@ void read_input_write_display () {
 
     // Adjust BPM by increments of 10 or 1
     uint8_t last_bpm = bpm;
-    if (millis() - buttonHoldI >= 1500 && digitalRead(inc) && bpm + 10 <= 240) bpm += 10;
-    else if (digitalRead(inc) && bpm + 1 <= 240) bpm += 1;
-    else if (millis() - buttonHoldD >= 1500 && digitalRead(dec) && bpm - 10 >= 40) bpm -= 10;
-    else if (digitalRead(dec) && bpm - 1 >= 40) bpm -= 1;
+    if (millis() - buttonHoldI >= BUTTON_HOLD_TIME_MS && digitalRead(INC) && bpm + 10 <= MAX_BPM) bpm += 10;
+    else if (digitalRead(INC) && bpm + 1 <= MAX_BPM) bpm += 1;
+    else if (millis() - buttonHoldD >= BUTTON_HOLD_TIME_MS && digitalRead(DEC) && bpm - 10 >= MIN_BPM) bpm -= 10;
+    else if (digitalRead(DEC) && bpm - 1 >= MIN_BPM) bpm -= 1;
 
     // Reset to 120 BPM if both buttons are pressed - Avoids need of pressing hardware reset button
-    if (digitalRead(inc) && digitalRead(dec)) bpm = 120;
+    if (digitalRead(INC) && digitalRead(DEC)) bpm = DEFAULT_BPM;
     
     // Reset timers on button release 
-    if (!digitalRead(inc)) buttonHoldI = millis();
-    if (!digitalRead(dec)) buttonHoldD = millis();
+    if (!digitalRead(INC)) buttonHoldI = millis();
+    if (!digitalRead(DEC)) buttonHoldD = millis();
 
     // Update display when transitioning over from 3 digits BPM to 2 digits BPM 
     if (last_bpm >= 100 && bpm < 100) lcd_clear_line(1);
@@ -40,7 +40,7 @@ void read_input_write_display () {
     if (last_bpm != bpm) lcd_write("BPM: " + (String) bpm, 1);
 
     // Metronome tone toggle
-    if (digitalRead(play)) enable = !enable;
+    if (digitalRead(PLAY)) enable = !enable;
   }
 }
 
@@ -55,10 +55,10 @@ void beep(unsigned long delay_beep) {
     current_beep = millis();
 
     // Action
-    tone(speaker, 550, 100);
-
-    if (visual.equals("| | | | ")) {
-      visual = "| ";
+    tone(SPEAKER, 550, 100);
+    
+    if (visual.equals(String(PULSE_CHAR) + ' ' + String(PULSE_CHAR) + ' ' + String(PULSE_CHAR) + ' ' + String(PULSE_CHAR) + ' ')) {
+      visual = String(PULSE_CHAR) + " ";
       lcd_clear_line(2);
     }
     else visual += output_concat;

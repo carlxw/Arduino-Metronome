@@ -1,25 +1,22 @@
+// Config
+#include "config.h"
+
 // Display
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-// Init pins
-#define inc       2
-#define dec       3
-#define play      4
-#define speaker   5
-
 // Core variables
-uint8_t bpm = 120;
+uint8_t bpm = DEFAULT_BPM;
 bool enable = false;
 String visual = ""; /* Variable moved here for scoping purposes */
 
 void setup() {
   // Init GPIO
-  pinMode(inc, INPUT);
-  pinMode(dec, INPUT);
-  pinMode(play, INPUT);
-  pinMode(speaker, OUTPUT);
+  pinMode(INC, INPUT);
+  pinMode(DEC, INPUT);
+  pinMode(PLAY, INPUT);
+  pinMode(SPEAKER, OUTPUT);
 
   // Debug
   Serial.begin(9600);
