@@ -1,8 +1,0 @@
-{
-    "max_bpm": 240,
-    "min_bpm": 40,
-    "button_hold_time_ms": 1500,
-    "default_bpm": 120,
-    "pulse_char": '|',
-    "button_debounce_ms": 125
-}
