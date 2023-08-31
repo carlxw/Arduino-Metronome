@@ -12,7 +12,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 // Core variables
 uint8_t bpm = 120;
 bool enable = false;
-String visual = "";
+String visual = ""; /* Variable moved here for scoping purposes */
 
 void setup() {
   // Init GPIO
