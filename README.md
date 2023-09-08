@@ -32,3 +32,6 @@ This is a metronome created using an Arduino because my family's physical metron
 * Default BPM
 * Pulse character (on metronome beep)
 * Button debounce time
+
+## Demo
+[Google Drive](https://drive.google.com/file/d/1ULIn-E9Hc5SD78-cg4Jfz9MGziXxmkPd/view?usp=sharing)
